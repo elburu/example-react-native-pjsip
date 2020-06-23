@@ -2,7 +2,7 @@ import React, {Component} from 'react'
 import PropTypes from 'prop-types'
 import {View, ScrollView} from 'react-native'
 import {connect} from 'react-redux'
-import {changeNetworkSettings} from '../../modules/app'
+import {changeNetworkSettings} from '../../modules/pjsip'
 import * as Navigation from '../../modules/navigation'
 
 import Header from '../../components/common/Header'

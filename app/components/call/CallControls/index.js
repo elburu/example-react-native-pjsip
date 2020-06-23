@@ -58,8 +58,8 @@ export default class CallControls extends Component {
   }
 
   onAnswerPress() {
+    this.props.onAnswerPress && this.props.onAnswerPress()
     if (this.props.call.getState() == "PJSIP_INV_STATE_INCOMING") {
-      this.props.onAnswerPress && this.props.onAnswerPress()
     }
   }
 
@@ -76,10 +76,10 @@ export default class CallControls extends Component {
       <View style={[s.container, {width: this.state.screenWidth}]}>
         <Animated.View style={[{left: this.state.hangupOffset}, s.buttonContainer]}>
           <TouchableOpacity
-            onPress={this._onHangupPress}
-            style={[s.buttonTouchable, (call.getState() == "PJSIP_INV_STATE_DISCONNECTED" ? s.buttonDisabled : s.buttonRed)]}
+            onPress={this._onAnswerPress}
+            style={[s.buttonTouchable, (call.getState() == "PJSIP_INV_STATE_DISCONNECTED" ? s.buttonDisabled : s.buttonGreen)]}
           >
-            <Image source={require('../../../assets/images/call/action-hangup.png')}/>
+            <Image source={require('../../../assets/images/call/action-answer.png')}/>
           </TouchableOpacity>
         </Animated.View>
 

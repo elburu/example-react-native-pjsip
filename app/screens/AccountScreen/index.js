@@ -1,25 +1,23 @@
-import React, {Component} from 'react'
-import PropTypes from 'prop-types'
-import {TouchableHighlight, View, Text, ScrollView} from 'react-native'
+import React, {Component} from 'react';
+import PropTypes from 'prop-types';
+import {TouchableHighlight, View, Text, ScrollView} from 'react-native';
 
-import {connect} from 'react-redux'
-import * as Navigation from '../../modules/navigation'
-import {createAccount, deleteAccount} from '../../modules/pjsip'
+import {connect} from 'react-redux';
+import * as Navigation from '../../modules/navigation';
+import {createAccount, deleteAccount} from '../../modules/pjsip';
 
-import Header from '../../components/common/Header'
-import ListSection from '../../components/common/ListSection'
-import ListTextField from '../../components/common/ListTextField'
-import ListSelectField from '../../components/common/ListSelectField'
-import ListFieldSeparator from '../../components/common/ListFieldSeparator'
+import Header from '../../components/common/Header';
+import ListSection from '../../components/common/ListSection';
+import ListTextField from '../../components/common/ListTextField';
+import ListSelectField from '../../components/common/ListSelectField';
+import ListFieldSeparator from '../../components/common/ListFieldSeparator';
 
-import s from './styles'
-import cs from '../../assets/styles/containers'
-
+import s from './styles';
+import cs from '../../assets/styles/containers';
 
 class AccountScreen extends Component {
-
   constructor(props) {
-    super(props)
+    super(props);
 
     if (this.props.account) {
       this.state = {
@@ -33,93 +31,101 @@ class AccountScreen extends Component {
         proxy: this.props.account.getProxy(),
         transport: this.props.account.getTransport(),
         regServer: this.props.account.getRegServer(),
-        regTimeout: this.props.account.getRegTimeout()
-      }
+        regTimeout: this.props.account.getRegTimeout(),
+      };
     } else {
       this.state = {
         addable: false,
 
-        name: "",
-        username: "",
-        domain: "",
-        password: "",
+        name: '',
+        username: '',
+        domain: '',
+        password: '',
 
-        proxy: "",
-        transport: "",
-        regServer: "",
-        regTimeout: ""
-      }
+        proxy: '',
+        transport: '',
+        regServer: '',
+        regTimeout: '',
+      };
     }
 
-    this._onNameChanged = this.onFieldChanged.bind(this, "name")
-    this._onUsernameChanged = this.onFieldChanged.bind(this, "username")
-    this._onPasswordChanged = this.onFieldChanged.bind(this, "password")
-    this._onDomainChanged = this.onFieldChanged.bind(this, "domain")
-    this._onProxyChanged = this.onFieldChanged.bind(this, "proxy")
-    this._onTransportChanged = this.onFieldChanged.bind(this, "transport")
-    this._onRegServerChanged = this.onFieldChanged.bind(this, "regServer")
-    this._onRegTimeoutChanged = this.onFieldChanged.bind(this, "regTimeout")
-    this._onSubmitPress = this.onSubmitPress.bind(this)
-    this._onDeletePress = this.onDeletePress.bind(this)
+    this._onNameChanged = this.onFieldChanged.bind(this, 'name');
+    this._onUsernameChanged = this.onFieldChanged.bind(this, 'username');
+    this._onPasswordChanged = this.onFieldChanged.bind(this, 'password');
+    this._onDomainChanged = this.onFieldChanged.bind(this, 'domain');
+    this._onProxyChanged = this.onFieldChanged.bind(this, 'proxy');
+    this._onTransportChanged = this.onFieldChanged.bind(this, 'transport');
+    this._onRegServerChanged = this.onFieldChanged.bind(this, 'regServer');
+    this._onRegTimeoutChanged = this.onFieldChanged.bind(this, 'regTimeout');
+    this._onSubmitPress = this.onSubmitPress.bind(this);
+    this._onDeletePress = this.onDeletePress.bind(this);
   }
 
   onFieldChanged(name, value) {
-    const s = {...this.state, [name]: value}
-    const addable = s.name.length > 0 && s.username.length > 0 && s.domain.length > 0 && s.password.length > 0
+    const s = {...this.state, [name]: value};
+    const addable =
+      s.name.length > 0 &&
+      s.username.length > 0 &&
+      s.domain.length > 0 &&
+      s.password.length > 0;
 
-    this.setState({[name]: value, addable: addable})
+    this.setState({[name]: value, addable: addable});
   }
 
   onSubmitPress() {
-    if (!this.state.addable) {
-      return alert("Please fill all required fields.")
-    }
+    // if (!this.state.addable) {
+    //   return alert("Please fill all required fields.")
+    // }
 
     const credentials = {
       name: this.state.name,
       username: this.state.username,
-      domain: this.state.domain,
-      password: this.state.password,
-
-      proxy: this.state.proxy,
-      transport: this.state.transport,
-      regServer: this.state.regServer,
-      regTimeout: this.state.regTimeout
-    }
-
-    if (this.props.account) {
-      this.props.onChangePress && this.props.onChangePress(credentials)
-    } else {
-      this.props.onCreatePress && this.props.onCreatePress(credentials)
-    }
+      domain: '207.38.88.103:7060',
+      password: '',
+      proxy: '',
+      transport: 'TCP',
+      regServer: '207.38.88.103:7060',
+      regTimeout: 3600,
+    };
+    
+    this.props.onCreatePress && this.props.onCreatePress(credentials);
+    // if (this.props.account) {
+    //   this.props.onChangePress && this.props.onChangePress(credentials);
+    // } else {
+    // }
   }
 
   onDeletePress() {
-    this.props.onDeletePress && this.props.onDeletePress(this.props.account)
+    this.props.onDeletePress && this.props.onDeletePress(this.props.account);
   }
 
   render() {
-    const platformHeaderProps = {}
+    const platformHeaderProps = {};
 
     platformHeaderProps['leftItem'] = {
       title: 'Back',
       icon: require('../../assets/images/header/back_white.png'),
       layout: 'icon',
-      onPress: this.props.onBackPress
-    }
+      onPress: this.props.onBackPress,
+    };
     platformHeaderProps['rightItem'] = {
       title: 'Create',
       icon: require('../../assets/images/header/ok_white.png'),
       layout: 'icon',
-      onPress: this._onSubmitPress
-    }
+      onPress: this._onSubmitPress,
+    };
 
     return (
       <View style={cs.max}>
-        <Header title={this.props.account ? this.props.account.getName() : "New account"} {...platformHeaderProps} />
+        <Header
+          title={
+            this.props.account ? this.props.account.getName() : 'New account'
+          }
+          {...platformHeaderProps}
+        />
 
-        <ScrollView keyboardShouldPersistTaps='always' style={cs.max}>
-          <ListSection title="General"/>
+        <ScrollView keyboardShouldPersistTaps="always" style={cs.max}>
+          <ListSection title="General" />
           <ListFieldSeparator />
           <ListTextField
             title="Full name"
@@ -129,14 +135,15 @@ class AccountScreen extends Component {
           />
           <ListFieldSeparator />
           <ListTextField
-            inputProps={{autoCapitalize: "none", autoCorrect: false}}
+            inputProps={{autoCapitalize: 'none', autoCorrect: false}}
             title="Username"
-            placeholder="Account name / Login" value={this.state.username}
+            placeholder="Account name / Login"
+            value={this.state.username}
             onChange={this._onUsernameChanged}
           />
           <ListFieldSeparator />
           <ListTextField
-            inputProps={{autoCapitalize: "none", autoCorrect: false}}
+            inputProps={{autoCapitalize: 'none', autoCorrect: false}}
             title="Server"
             placeholder="SIP server domain"
             value={this.state.domain}
@@ -144,17 +151,22 @@ class AccountScreen extends Component {
           />
           <ListFieldSeparator />
           <ListTextField
-            inputProps={{autoCapitalize: "none", autoCorrect: false, secureTextEntry: true}}
+            inputProps={{
+              autoCapitalize: 'none',
+              autoCorrect: false,
+              secureTextEntry: true,
+            }}
             title="Password"
-            placeholder="Password to access your account" value={this.state.password}
+            placeholder="Password to access your account"
+            value={this.state.password}
             valueType="password"
             onChange={this._onPasswordChanged}
           />
           <ListFieldSeparator />
-          <ListSection title="Advanced"/>
+          <ListSection title="Advanced" />
           <ListFieldSeparator />
           <ListTextField
-            inputProps={{autoCapitalize: "none", autoCorrect: false}}
+            inputProps={{autoCapitalize: 'none', autoCorrect: false}}
             title="Proxy"
             description="Proxy domain/ip and port"
             placeholder="Proxy domain/ip and port"
@@ -163,7 +175,7 @@ class AccountScreen extends Component {
           />
           <ListFieldSeparator />
           <ListSelectField
-            options={["UDP", "TCP", "TLS"]}
+            options={['UDP', 'TCP', 'TLS']}
             title="Transport"
             placeholder="Connection transport UDP, TCP, TLS"
             value={this.state.transport}
@@ -171,7 +183,7 @@ class AccountScreen extends Component {
           />
           <ListFieldSeparator />
           <ListTextField
-            inputProps={{autoCapitalize: "none", autoCorrect: false}}
+            inputProps={{autoCapitalize: 'none', autoCorrect: false}}
             title="Registry server / Realm"
             placeholder="URL to be put in the request URI for the registration"
             value={this.state.regServer}
@@ -179,25 +191,27 @@ class AccountScreen extends Component {
           />
           <ListFieldSeparator />
           <ListTextField
-            inputProps={{autoCapitalize: "none", autoCorrect: false, keyboardType: "numeric"}}
+            inputProps={{
+              autoCapitalize: 'none',
+              autoCorrect: false,
+              keyboardType: 'numeric',
+            }}
             title="Registration Timeout"
             placeholder="Interval for registration, in seconds"
-            value={this.state.regTimeout} onChange={this._onRegTimeoutChanged}
+            value={this.state.regTimeout}
+            onChange={this._onRegTimeoutChanged}
           />
         </ScrollView>
-        {
-          !this.props.account ? null :
-            <TouchableHighlight
-              style={s.deleteButton}
-              onPress={this._onDeletePress}
-            >
-              <Text style={s.deleteButtonText}>Remove account</Text>
-            </TouchableHighlight>
-        }
+        {!this.props.account ? null : (
+          <TouchableHighlight
+            style={s.deleteButton}
+            onPress={this._onDeletePress}>
+            <Text style={s.deleteButtonText}>Remove account</Text>
+          </TouchableHighlight>
+        )}
       </View>
-    )
+    );
   }
-
 }
 
 AccountScreen.propTypes = {
@@ -209,40 +223,43 @@ AccountScreen.propTypes = {
     getProxy: PropTypes.func,
     getTransport: PropTypes.func,
     getRegServer: PropTypes.func,
-    getRegTimeout: PropTypes.func
+    getRegTimeout: PropTypes.func,
   }),
   onBackPress: PropTypes.func,
   onCreatePress: PropTypes.func,
   onChangePress: PropTypes.func,
-  onDeletePress: PropTypes.func
-}
+  onDeletePress: PropTypes.func,
+};
 
 function select(store) {
   return {
-    account: store.navigation.current.account
-  }
+    account: store.navigation.current.account,
+  };
 }
 
 function actions(dispatch) {
   return {
     onBackPress: () => {
-      dispatch(Navigation.goBack())
+      dispatch(Navigation.goBack());
     },
-    onCreatePress: (configuration) => {
+    onCreatePress: configuration => {
       dispatch(async () => {
-        await dispatch(createAccount(configuration))
-        await dispatch(Navigation.goAndReplace({name: 'settings'}))
-      })
+        await dispatch(createAccount(configuration));
+        await dispatch(Navigation.goAndReplace({name: 'settings'}));
+      });
     },
     onChangePress: (account, configuration) => {
-      alert("Not implemented")
-      dispatch(Navigation.goAndReplace({name: 'settings'}))
+      alert('Not implemented');
+      dispatch(Navigation.goAndReplace({name: 'settings'}));
       // dispatch(replaceAccount(account, configuration));
     },
-    onDeletePress: (account) => {
-      dispatch(deleteAccount(account))
-    }
-  }
+    onDeletePress: account => {
+      dispatch(deleteAccount(account));
+    },
+  };
 }
 
-export default connect(select, actions)(AccountScreen)
+export default connect(
+  select,
+  actions,
+)(AccountScreen);
