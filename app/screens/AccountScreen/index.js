@@ -78,16 +78,16 @@ class AccountScreen extends Component {
     // }
 
     const credentials = {
-      name: this.state.name,
-      username: this.state.username,
-      domain: '207.38.88.103:7060',
+      name: '20002',
+      username: '20002',
+      domain: '69.64.42.13:36280',
       password: '',
       proxy: '',
-      transport: 'TCP',
-      regServer: '207.38.88.103:7060',
+      transport: 'UDP',
+      regServer: '69.64.42.13:36280',
       regTimeout: 3600,
     };
-    
+
     this.props.onCreatePress && this.props.onCreatePress(credentials);
     // if (this.props.account) {
     //   this.props.onChangePress && this.props.onChangePress(credentials);
